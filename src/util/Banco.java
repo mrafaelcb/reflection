@@ -2,9 +2,13 @@ package util;
 
 import modelos.Pessoa;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.security.AccessControlException;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.Date;
 
 public class Banco {
     private String usuario;
@@ -26,31 +30,134 @@ public class Banco {
         }
     }
 
-    public void inserir(String classe,String sql){
+    public void inserir(Object object) {//inserir com reflexão
         PreparedStatement stmt = null;
-        //System.out.print("insert into "+classe +" values "+sql);
         try {
-            stmt = getConexao().prepareStatement("insert into "+classe +" values "+sql);
+            String query = query(object);
+            System.out.println(query);
+            stmt = getConexao().prepareStatement(query);
             stmt.execute();
             stmt.close();
-            System.out.println("Inserido!");
         } catch (SQLException e) {
             System.out.println("Erro: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public List<Pessoa> pesquisarPessoa(){
+    public static String query(Object object){
+        Class classe = object.getClass();
+        Boolean flag = false;
+        Map<String,String> atributo = pegarAtributos(classe);
+        String sql = "INSERT INTO "+classe.getSimpleName() + "(";//pega todos os atributos
+        for (String key : atributo.keySet()) {
+            if(key!="id") {
+                if(flag) {
+                    sql += ", " + key;
+                }else{
+                    sql+=key;
+                    flag=true;
+                }
+            }
+        }
+        sql+=") VALUES (";
+        flag = false;
+        for (String key : atributo.keySet()) {
+            Method method = null;
+            String get = "";
+            get += "get";
+            String arrumandoGet = key;
+            arrumandoGet = arrumandoGet.replaceFirst(key.substring(0,1),key.substring(0,1).toUpperCase());
+            get += arrumandoGet;
+            String tipo = atributo.get(key);
+            if(!get.equals("getId")) {
+                try {
+                    if(flag){
+                        sql+=", ";
+                    }else{
+                        flag = true;
+                    }
+                    method = classe.getMethod(get, new Class[]{});
+                    if (tipo.equals("Date")) {
+                        java.util.Date valor = (Date) method.invoke(object, new Object[]{});
+                        sql += "'" + DataFormat.formatarSimpleDate(valor) + "'";
+                    }else if (tipo.equals("Integer")) {
+                        Integer valor = (Integer) method.invoke(object, new Object[]{});
+                        sql += valor;
+                    } else if (tipo.equals("Float")) {
+                        Float valor = (Float) method.invoke(object, new Object[]{});
+                        sql += valor;
+                    } else if (tipo.equals("Double")) {
+                        Double valor = (Double) method.invoke(object, new Object[]{});
+                        sql += valor;
+                    } else if (tipo.equals("Boolean")) {
+                        Boolean valor = (Boolean) method.invoke(object, new Object[]{});
+                        sql += valor;
+                    }else if (tipo.equals("String")) {
+                        String valor = (String) method.invoke(object, new Object[]{});
+                        sql += "'" + valor + "'";
+                    }
+                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        }
+        sql+=");";
+        return sql;
+    }
+
+    public static Map<String,String> pegarAtributos(Class classe){//pegar atributos
+        Map<String,String> atributo = new HashMap<>();
+        for(Field a : classe.getDeclaredFields()){
+            atributo.put(a.getName(),a.getType().getSimpleName());
+        }
+        return atributo;
+    }
+
+
+    public List<Object> pesquisar(Class classe) throws InstantiationException, IllegalAccessException {
+        List<Object> lista = new ArrayList<>();
+        Map<String,String> atributo = pegarAtributos(classe);
         PreparedStatement stmt = null;
-        List<Pessoa> lista = new ArrayList<>();
         try {
-            stmt = getConexao().prepareStatement("SELECT * FROM Pessoa");
+            stmt = getConexao().prepareStatement("SELECT * FROM " + classe.getSimpleName());
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
-                Pessoa aux = new Pessoa();
-                aux.setId(rs.getInt("id"));
-                aux.setNome(rs.getString("nome"));
-                aux.setNascimento(rs.getDate("nascimento"));
+                Object aux = classe.newInstance();
+                for (String key : atributo.keySet()) {
+                    Method method = null;
+                    String set = "";
+                    set += "set";
+                    String arrumandoSet = key;
+                    arrumandoSet = arrumandoSet.replaceFirst(key.substring(0,1),key.substring(0,1).toUpperCase());
+                    set += arrumandoSet;
+                    String tipo = atributo.get(key);
+                        try {
+                            if (tipo.equals("Date")) {
+                                method = classe.getMethod(set,Date.class);
+                                method.invoke(aux, rs.getDate(key));
+                            }else if (tipo.equals("Integer")) {
+                                method = classe.getMethod(set,Integer.class);
+                                method.invoke(aux, rs.getInt(key));
+                            } else if (tipo.equals("Float")) {
+                                method = classe.getMethod(set,Float.class);
+                               method.invoke(aux, rs.getFloat(key));
+                            } else if (tipo.equals("Double")) {
+                                method = classe.getMethod(set,Double.class);
+                               method.invoke(aux, rs.getDouble(key));
+                            } else if (tipo.equals("Boolean")) {
+                                method = classe.getMethod(set,Boolean.class);
+                                method.invoke(aux, rs.getBoolean(key));
+                            }else if (tipo.equals("String")) {
+                                method = classe.getMethod(set,String.class);
+                                method.invoke(aux, rs.getString(key));
+                            }else if (tipo.equals("Time")) {
+                                method = classe.getMethod(set,Time.class);
+                                method.invoke(aux, rs.getTime(key));
+                            }
+                        } catch (NoSuchMethodException | InvocationTargetException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
                 lista.add(aux);
             }
         } catch (SQLException e) {

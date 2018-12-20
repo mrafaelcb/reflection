@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="PostgreSQL 11">
-  <database-model serializer="dbm" rdbms="POSTGRES" format-version="4.11">
+  <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.14">
     <root id="1">
       <ServerVersion>11.0</ServerVersion>
     </root>
@@ -219,7 +219,6 @@
       <Owner>postgres</Owner>
       <StateNumber>582</StateNumber>
       <SequenceIdentity>1..2147483647</SequenceIdentity>
-      <BelongsToColumn>1</BelongsToColumn>
       <CacheSize>1</CacheSize>
       <DataType>integer</DataType>
     </sequence>
@@ -228,7 +227,6 @@
       <Owner>postgres</Owner>
       <StateNumber>586</StateNumber>
       <SequenceIdentity>1..2147483647</SequenceIdentity>
-      <BelongsToColumn>1</BelongsToColumn>
       <CacheSize>1</CacheSize>
       <DataType>integer</DataType>
     </sequence>
@@ -237,7 +235,6 @@
       <Owner>postgres</Owner>
       <StateNumber>597</StateNumber>
       <SequenceIdentity>1..2147483647</SequenceIdentity>
-      <BelongsToColumn>1</BelongsToColumn>
       <CacheSize>1</CacheSize>
       <DataType>integer</DataType>
     </sequence>
@@ -246,7 +243,6 @@
       <Owner>postgres</Owner>
       <StateNumber>581</StateNumber>
       <SequenceIdentity>1..2147483647</SequenceIdentity>
-      <BelongsToColumn>1</BelongsToColumn>
       <CacheSize>1</CacheSize>
       <DataType>integer</DataType>
     </sequence>
@@ -255,7 +251,6 @@
       <Owner>postgres</Owner>
       <StateNumber>583</StateNumber>
       <SequenceIdentity>1..2147483647</SequenceIdentity>
-      <BelongsToColumn>1</BelongsToColumn>
       <CacheSize>1</CacheSize>
       <DataType>integer</DataType>
     </sequence>
@@ -264,7 +259,6 @@
       <Owner>postgres</Owner>
       <StateNumber>584</StateNumber>
       <SequenceIdentity>1..2147483647</SequenceIdentity>
-      <BelongsToColumn>1</BelongsToColumn>
       <CacheSize>1</CacheSize>
       <DataType>integer</DataType>
     </sequence>
@@ -305,7 +299,6 @@
       <StateNumber>582</StateNumber>
       <DefaultExpression>nextval(&apos;departamento_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
-      <SequenceName>departamento_id_seq</SequenceName>
     </column>
     <column id="50" parent="43" name="nome">
       <Position>2</Position>
@@ -378,7 +371,6 @@
       <StateNumber>586</StateNumber>
       <DefaultExpression>nextval(&apos;endereco_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
-      <SequenceName>endereco_id_seq</SequenceName>
     </column>
     <column id="60" parent="44" name="rua">
       <Position>2</Position>
@@ -412,7 +404,6 @@
       <StateNumber>581</StateNumber>
       <DefaultExpression>nextval(&apos;pessoas_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
-      <SequenceName>pessoas_id_seq</SequenceName>
     </column>
     <column id="65" parent="45" name="nome">
       <Position>2</Position>
@@ -446,7 +437,6 @@
       <StateNumber>597</StateNumber>
       <DefaultExpression>nextval(&apos;pessoas_departamento_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
-      <SequenceName>pessoas_departamento_id_seq</SequenceName>
     </column>
     <column id="70" parent="46" name="pessoas_id">
       <Position>2</Position>
@@ -480,7 +470,6 @@
       <StateNumber>583</StateNumber>
       <DefaultExpression>nextval(&apos;projeto_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
-      <SequenceName>projeto_id_seq</SequenceName>
     </column>
     <column id="75" parent="47" name="gerente_pessoas_id">
       <Position>2</Position>
@@ -543,7 +532,6 @@
       <StateNumber>584</StateNumber>
       <DefaultExpression>nextval(&apos;projeto_pessoas_id_seq&apos;::regclass)</DefaultExpression>
       <TypeId>23</TypeId>
-      <SequenceName>projeto_pessoas_id_seq</SequenceName>
     </column>
     <column id="84" parent="48" name="funcao">
       <Position>2</Position>
