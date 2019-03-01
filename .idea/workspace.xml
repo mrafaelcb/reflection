@@ -2,11 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="21e7eb7b-aede-49b1-aa57-9faf5f2d9cad" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/306f2258-3444-47ba-9b4c-582ccd7d2e68.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/306f2258-3444-47ba-9b4c-582ccd7d2e68.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/util/Banco.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/util/Banco.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -47,11 +42,19 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/util/Banco.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="116" column="4" lean-forward="true" selection-start-line="116" selection-start-column="4" selection-end-line="167" selection-end-column="5" />
+            <state relative-caret-position="408">
+              <caret line="42" column="11" selection-start-line="42" selection-start-column="11" selection-end-line="42" selection-end-column="11" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <element signature="method#Banco#0;class#Banco#0" />
+                <element signature="e#607#701#0" />
+                <element signature="e#725#769#0" />
+                <element signature="method#query#0;class#Banco#0" />
+                <element signature="method#arrumarGet#0;class#Banco#0" />
+                <element signature="method#pegarAtributos#0;class#Banco#0" />
+                <element signature="method#pesquisar#0;class#Banco#0" />
                 <element signature="method#deletarPessoa#0;class#Banco#0" />
+                <element signature="e#7077#7303#0" />
+                <element signature="e#7327#7430#0" />
               </folding>
             </state>
           </provider>
@@ -122,7 +125,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -151,6 +153,7 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -240,17 +243,18 @@
       <workItem from="1543344661331" duration="365000" />
       <workItem from="1543404577900" duration="128000" />
       <workItem from="1543405161385" duration="8579000" />
+      <workItem from="1551442979089" duration="197000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="76127000" />
+    <option name="totallyTimeSpent" value="76324000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1320" height="784" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.37222221" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.37857142" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -307,12 +311,6 @@
           <line>63</line>
           <properties />
           <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/util/Banco.java</url>
-          <line>124</line>
-          <properties />
-          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -679,11 +677,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/util/Banco.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="116" column="4" lean-forward="true" selection-start-line="116" selection-start-column="4" selection-end-line="167" selection-end-column="5" />
+        <state relative-caret-position="408">
+          <caret line="42" column="11" selection-start-line="42" selection-start-column="11" selection-end-line="42" selection-end-column="11" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="method#Banco#0;class#Banco#0" />
+            <element signature="e#607#701#0" />
+            <element signature="e#725#769#0" />
+            <element signature="method#query#0;class#Banco#0" />
+            <element signature="method#arrumarGet#0;class#Banco#0" />
+            <element signature="method#pegarAtributos#0;class#Banco#0" />
+            <element signature="method#pesquisar#0;class#Banco#0" />
             <element signature="method#deletarPessoa#0;class#Banco#0" />
+            <element signature="e#7077#7303#0" />
+            <element signature="e#7327#7430#0" />
           </folding>
         </state>
       </provider>

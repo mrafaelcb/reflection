@@ -38,7 +38,7 @@ public class Banco {
             stmt = getConexao().prepareStatement(query);
             stmt.execute();
             stmt.close();
-        } catch (SQLException e) {
+           } catch (SQLException e) {
             System.out.println("Erro: " + e.getMessage());
             e.printStackTrace();
         }
@@ -50,59 +50,64 @@ public class Banco {
         Map<String,String> atributo = pegarAtributos(classe);
         String sql = "INSERT INTO "+classe.getSimpleName() + "(";//pega todos os atributos
         for (String key : atributo.keySet()) {
-            if(key!="id") {
-                if(flag) {
-                    sql += ", " + key;
-                }else{
-                    sql+=key;
-                    flag=true;
-                }
+            if(flag) {
+                sql += "," + key;
+            }else{
+                sql+=key;
+                flag=true;
             }
         }
         sql+=") VALUES (";
         flag = false;
         for (String key : atributo.keySet()) {
             Method method = null;
-            String get = "";
-            get += "get";
-            String arrumandoGet = key;
-            arrumandoGet = arrumandoGet.replaceFirst(key.substring(0,1),key.substring(0,1).toUpperCase());
-            get += arrumandoGet;
+            String get = arrumarGet(key);
             String tipo = atributo.get(key);
-            if(!get.equals("getId")) {
-                try {
-                    if(flag){
-                        sql+=", ";
-                    }else{
-                        flag = true;
-                    }
-                    method = classe.getMethod(get, new Class[]{});
-                    if (tipo.equals("Date")) {
-                        java.util.Date valor = (Date) method.invoke(object, new Object[]{});
-                        sql += "'" + DataFormat.formatarSimpleDate(valor) + "'";
-                    }else if (tipo.equals("Integer")) {
-                        Integer valor = (Integer) method.invoke(object, new Object[]{});
-                        sql += valor;
-                    } else if (tipo.equals("Float")) {
-                        Float valor = (Float) method.invoke(object, new Object[]{});
-                        sql += valor;
-                    } else if (tipo.equals("Double")) {
-                        Double valor = (Double) method.invoke(object, new Object[]{});
-                        sql += valor;
-                    } else if (tipo.equals("Boolean")) {
-                        Boolean valor = (Boolean) method.invoke(object, new Object[]{});
-                        sql += valor;
-                    }else if (tipo.equals("String")) {
-                        String valor = (String) method.invoke(object, new Object[]{});
-                        sql += "'" + valor + "'";
-                    }
-                } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e1) {
-                    e1.printStackTrace();
+            try {
+                if(flag){
+                    sql+=",";
+                }else{
+                    flag = true;
                 }
+                method = classe.getMethod(get, new Class[]{});
+                if (tipo.equals("Date")) {
+                    Date valor = (Date) method.invoke(object, new Object[]{});
+                    sql += "'" + DataFormat.formatarSimpleDate(valor) + "'";
+                }else if (tipo.equals("Integer")) {
+                    Integer valor = (Integer) method.invoke(object, new Object[]{});
+                    if((get.equals("getId") && valor!=null) || !get.equals("getId")){
+                        sql += valor;
+                    }else{
+                        sql+="DEFAULT";
+                    }
+                } else if (tipo.equals("Float")) {
+                    Float valor = (Float) method.invoke(object, new Object[]{});
+                    sql += valor;
+                } else if (tipo.equals("Double")) {
+                    Double valor = (Double) method.invoke(object, new Object[]{});
+                    sql+= valor;
+                } else if (tipo.equals("Boolean")) {
+                    Boolean valor = (Boolean) method.invoke(object, new Object[]{});
+                    sql += valor;
+                }else if (tipo.equals("String")) {
+                    String valor = (String) method.invoke(object, new Object[]{});
+                    sql += "'" + valor + "'";
+                }
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e1) {
+                e1.printStackTrace();
             }
         }
         sql+=");";
         return sql;
+    }
+
+    public static String arrumarGet(String key) {
+        String get = "";
+        get += "get";
+        String arrumandoGet = key;
+        arrumandoGet = arrumandoGet.replaceFirst(key.substring(0,1),key.substring(0,1).toUpperCase());
+        get += arrumandoGet;
+        return get;
     }
 
     public static Map<String,String> pegarAtributos(Class classe){//pegar atributos
@@ -119,7 +124,7 @@ public class Banco {
         Map<String,String> atributo = pegarAtributos(classe);
         PreparedStatement stmt = null;
         try {
-            stmt = getConexao().prepareStatement("SELECT * FROM " + classe.getSimpleName());
+            stmt = getConexao().prepareStatement("SELECT * FROM " + classe.getSimpleName() +";");
             ResultSet rs = stmt.executeQuery();
             while(rs.next()) {
                 Object aux = classe.newInstance();
@@ -131,33 +136,34 @@ public class Banco {
                     arrumandoSet = arrumandoSet.replaceFirst(key.substring(0,1),key.substring(0,1).toUpperCase());
                     set += arrumandoSet;
                     String tipo = atributo.get(key);
-                        try {
-                            if (tipo.equals("Date")) {
-                                method = classe.getMethod(set,Date.class);
-                                method.invoke(aux, rs.getDate(key));
-                            }else if (tipo.equals("Integer")) {
-                                method = classe.getMethod(set,Integer.class);
-                                method.invoke(aux, rs.getInt(key));
-                            } else if (tipo.equals("Float")) {
-                                method = classe.getMethod(set,Float.class);
-                               method.invoke(aux, rs.getFloat(key));
-                            } else if (tipo.equals("Double")) {
-                                method = classe.getMethod(set,Double.class);
-                               method.invoke(aux, rs.getDouble(key));
-                            } else if (tipo.equals("Boolean")) {
-                                method = classe.getMethod(set,Boolean.class);
-                                method.invoke(aux, rs.getBoolean(key));
-                            }else if (tipo.equals("String")) {
-                                method = classe.getMethod(set,String.class);
-                                method.invoke(aux, rs.getString(key));
-                            }else if (tipo.equals("Time")) {
-                                method = classe.getMethod(set,Time.class);
-                                method.invoke(aux, rs.getTime(key));
-                            }
-                        } catch (NoSuchMethodException | InvocationTargetException e1) {
-                            e1.printStackTrace();
+                    try {
+                        if (tipo.equals("Date")) {
+                            method = classe.getMethod(set,Date.class);
+                            method.invoke(aux, rs.getDate(key));
+                        }else if (tipo.equals("Integer")) {
+                            method = classe.getMethod(set,Integer.class);
+                            method.invoke(aux, rs.getInt(key));
+                        } else if (tipo.equals("Float")) {
+                            method = classe.getMethod(set,Float.class);
+                            method.invoke(aux, rs.getFloat(key));
+                        } else if (tipo.equals("Double")) {
+                            method = classe.getMethod(set,Double.class);
+                            method.invoke(aux, rs.getDouble(key));
+                        } else if (tipo.equals("Boolean")) {
+                            method = classe.getMethod(set,Boolean.class);
+                            method.invoke(aux, rs.getBoolean(key));
+                        }else if (tipo.equals("String")) {
+                            method = classe.getMethod(set,String.class);
+                            method.invoke(aux, rs.getString(key));
+                        }else if (tipo.equals("Time")) {
+                            method = classe.getMethod(set,Time.class);
+                            method.invoke(aux, rs.getTime(key));
                         }
+                    } catch (NoSuchMethodException | InvocationTargetException e1) {
+                        e1.printStackTrace();
                     }
+                }
+                query(aux);
                 lista.add(aux);
             }
         } catch (SQLException e) {
